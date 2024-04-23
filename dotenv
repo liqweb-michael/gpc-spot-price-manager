@@ -1,0 +1,7 @@
+loglevel='info'
+port=3002
+redis_username=''
+redis_password=''
+redis_host='localhost'
+redis_port=6379
+redis_tls=false

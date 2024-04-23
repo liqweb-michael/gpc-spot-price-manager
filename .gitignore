@@ -1,0 +1,14 @@
+node_modules
+.env
+dist/index.d.ts
+dist/index.js
+dist/lib/ingester_notification.d.ts
+dist/lib/ingester_notification.js
+dist/lib/redis_source.d.ts
+dist/lib/redis_source.js
+dist/lib/timescale_source.d.ts
+dist/lib/timescale_source.js
+dist/processors/spot_price_sources.d.ts
+dist/processors/spot_price_sources.js
+dist/processors/spot_price.d.ts
+dist/processors/spot_price.js

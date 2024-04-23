@@ -1,0 +1,5 @@
+{
+    "ignored_files": ["node_modules", "tailwind"],
+    "compiled_files": ["**/*.ts", "**/*.tsx"], 
+    "use_ts_exclude": false
+}
