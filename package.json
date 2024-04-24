@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node dist/index.js",
-    "build": "rm -rf ./dist && tsc && npm run tailwind:css",
+    "build": "rm -rf ./dist && tsc && tscp",
     "dev": "concurrently \"nodemon\"  \"tsc -w\"",
     "tailwind:css": "postcss src/tailwind/tailwind.css -o src/public/css/style.css",
     "processor": "node -r tsconfig-paths/register -r ts-node/register ./src/processor.ts"
@@ -16,6 +16,7 @@
   "dependencies": {
     "async-lock": "^1.4.1",
     "console-log-level": "^1.4.1",
+    "cron": "^3.1.7",
     "dotenv": "^16.3.1",
     "eta": "^3.2.0",
     "express": "^4.19.2",
@@ -23,8 +24,7 @@
     "nodemon": "^3.0.2",
     "pg": "^8.11.5",
     "pg-format": "^1.0.4",
-    "redis": "^4.6.13",
-    "tailwindcss": "^3.4.1"
+    "redis": "^4.6.13"
   },
   "devDependencies": {
     "@types/async-lock": "^1.4.2",
@@ -37,7 +37,8 @@
     "concurrently": "^8.2.2",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
-    "typescript": "^5.4.3"
+    "typescript": "^5.4.3",
+    "typescript-cp": "^0.1.9"
   },
   "_moduleAliases": {
     "@routes": "dist/routes",

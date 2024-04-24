@@ -12,3 +12,9 @@ dist/processors/spot_price_sources.d.ts
 dist/processors/spot_price_sources.js
 dist/processors/spot_price.d.ts
 dist/processors/spot_price.js
+dist/lib/console.d.ts
+dist/lib/console.js
+dist/processors/spot_price_catchup.d.ts
+dist/processors/spot_price_catchup.js
+dist/views/catchup.eta
+dist/views/index.eta
