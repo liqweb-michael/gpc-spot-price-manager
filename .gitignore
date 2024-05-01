@@ -18,3 +18,4 @@ dist/processors/spot_price_catchup.d.ts
 dist/processors/spot_price_catchup.js
 dist/views/catchup.eta
 dist/views/index.eta
+.vscode/settings.json
