@@ -23,7 +23,7 @@ log.log = (message?: any, ...optionalParams: any[]) => { _console.log(logPrefix(
 var _console = console;
 
 var new_console = {
-    log: (message?: any, ...optionalParams: any[]) => { _console.log(logPrefix() + message, ...optionalParams)},
+    log: (message?: any, ...optionalParams: any[]) => { _console.log(logPrefix() + ' ' + message, ...optionalParams)},
     trace: (message?: any, ...optionalParams: any[]) => { log.trace(message, ...optionalParams) },
     debug: (message?: any, ...optionalParams: any[]) => { log.debug(message, ...optionalParams) },
     warn: (message?: any, ...optionalParams: any[]) => { log.warn(message, ...optionalParams) },
