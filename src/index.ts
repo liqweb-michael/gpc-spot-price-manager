@@ -6,7 +6,8 @@ import path from "path";
 import dotenv from "dotenv";
 dotenv.config();
 
-import initSpotPriceProcessor, {processData as processSpotPriceData} from '@processors/spot_price';
+import initSpotPriceProcessor, {processData as processSpotPriceData} from '@processors/spot_price/spot_price';
+
 
 import '@lib/console';
 
@@ -29,11 +30,13 @@ app.get("/", (req: Request, res: Response) => {
     res.status(200).send( eta.render('index.eta', {}));
 });
 
+app.get("/catchup/:data_type", (req: Request, res: Response) => {
+    // get unprocessed data, then process it  
+});
+
 
 app.get("/catchup/do", (req: Request, res: Response) => {
-    // get unprocessed data, then process it
-    
-        
+    // get unprocessed data, then process it  
 });
 
 app.get("/catchup", (req: Request, res: Response) => {
@@ -48,4 +51,6 @@ app.listen(port, () => {
 
 
 initSpotPriceProcessor();
-import '@processors/spot_price_catchup';
+// import '@processors/spot_price/spot_price_catchup';
+
+import '@processors/catchup';

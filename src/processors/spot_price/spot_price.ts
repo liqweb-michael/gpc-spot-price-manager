@@ -1,5 +1,5 @@
 import IngesterNotification from "@lib/ingester_notification";
-import SpotPriceSourceIds, { default_spot_price_source } from "@processors/spot_price_sources";
+import SpotPriceSourceIds, { default_spot_price_source } from "@processors/spot_price/spot_price_sources";
 
 import TimescaleSource from '@lib/timescale_source';
 
