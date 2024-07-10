@@ -66,8 +66,8 @@ async function saveData(data: any, options = {}) {
             tsFormatted, 
             d.symbol,
             source_id, 
-            d.ask,
             d.bid,
+            d.ask,
             d.mid
         ];
 
