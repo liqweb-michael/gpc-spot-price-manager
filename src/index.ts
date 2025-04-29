@@ -8,7 +8,6 @@ dotenv.config();
 
 import initSpotPriceProcessor, {processData as processSpotPriceData} from '@processors/spot_price/spot_price';
 
-
 import '@lib/console';
 
 const app: Express = express();
@@ -54,3 +53,4 @@ initSpotPriceProcessor();
 // import '@processors/spot_price/spot_price_catchup';
 
 import '@processors/catchup';
+import '@processors/spot_price/spot_price';

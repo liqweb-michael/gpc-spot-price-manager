@@ -2,6 +2,7 @@ import IngesterNotification from "@lib/ingester_notification";
 import SpotPriceSourceIds, { default_spot_price_source } from "@processors/spot_price/spot_price_sources";
 
 import TimescaleSource from '@lib/timescale_source';
+import { CronJob } from 'cron';
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -118,3 +119,72 @@ async function fetchWithRetry(url:string, options: any, maxRetries = 3) {
   
     console.error(`Fetch failed after ${maxRetries} retries.`);
 }
+
+
+async function setCloseStatsForToday() {
+    const db = TimescaleSource.getInstance();
+
+    const query = `WITH latest_prices AS(
+            SELECT DISTINCT ON (date, symbol, source)
+                (time_bucket('1 day', time, 'America/Toronto')::date) AS date,
+                symbol,
+                source,
+                mid AS "close"
+            FROM spot_prices_real_time
+            WHERE time > ((now() AT TIME ZONE 'America/Toronto')::date - INTERVAL '1 day')
+                AND time < (time_bucket('1 day', time, 'America/Toronto') + INTERVAL '17 hours')
+            ORDER BY date, symbol, source, time DESC
+        )
+        UPDATE spot_prices_daily_stats ds
+        SET close = lp.close
+        FROM latest_prices lp
+        WHERE ds.time = lp.date
+            AND ds.symbol = lp.symbol
+            AND ds.source = lp.source`;
+    
+    await db.query(query);
+}
+
+async function setCloseStatsForPreviousDay() {
+    const db = TimescaleSource.getInstance();
+
+    const query = `WITH latest_stats AS (
+            SELECT
+                time, source, symbol, close
+            FROM
+                spot_prices_daily_stats ds
+            WHERE
+                time = ((now() AT TIME ZONE 'America/Toronto')::date - INTERVAL '1 day')
+        )
+        UPDATE spot_prices_daily_stats ds
+        SET previous_day_close = ls.close
+        FROM latest_stats ls
+        WHERE ds.time = ((now() AT TIME ZONE 'America/Toronto')::date)
+            AND ds.symbol = ls.symbol
+            AND ds.source = ls.source`;
+
+    const results = await db.query(query);    
+}
+
+(async () => {
+    console.log('init spot cron');
+    const job1 = CronJob.from({
+        cronTime: '0 1 17,18,19,20,21,22 * * *', // every day at 5:01pm
+
+        onTick: async () => {
+            console.log('get close stats for the day')
+            await setCloseStatsForToday();
+        },
+        start: true
+    });
+
+    const job2 = CronJob.from({
+        cronTime: '0 1 0,1,2,5,7 * * *', // every day at 12:01am
+
+        onTick: async () => {
+            console.log('set previous close stats for today')
+            await setCloseStatsForPreviousDay();
+        },
+        start: true
+    });
+})();
