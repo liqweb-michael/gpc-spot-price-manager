@@ -140,7 +140,8 @@ async function setCloseStatsForToday() {
         FROM latest_prices lp
         WHERE ds.time = lp.date
             AND ds.symbol = lp.symbol
-            AND ds.source = lp.source`;
+            AND ds.source = lp.source
+    `;
     
     await db.query(query);
 }
@@ -161,7 +162,8 @@ async function setCloseStatsForPreviousDay() {
         FROM latest_stats ls
         WHERE ds.time = ((now() AT TIME ZONE 'America/Toronto')::date)
             AND ds.symbol = ls.symbol
-            AND ds.source = ls.source`;
+            AND ds.source = ls.source
+    `;
 
     const results = await db.query(query);    
 }
@@ -169,7 +171,8 @@ async function setCloseStatsForPreviousDay() {
 (async () => {
     console.log('init spot cron');
     const job1 = CronJob.from({
-        cronTime: '0 1 17,18,19,20,21,22 * * *', // every day at 5:01pm
+        cronTime: '0 1 21,22 * * *', // every day at 5:01pm
+        // cronTime: '15,45 * * * * *',
 
         onTick: async () => {
             console.log('get close stats for the day')
@@ -179,8 +182,7 @@ async function setCloseStatsForPreviousDay() {
     });
 
     const job2 = CronJob.from({
-        cronTime: '0 1 0,1,2,5,7 * * *', // every day at 12:01am
-
+        cronTime: '0 1 4,5,6 * * *', // every day at 12:01am
         onTick: async () => {
             console.log('set previous close stats for today')
             await setCloseStatsForPreviousDay();
