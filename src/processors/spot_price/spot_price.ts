@@ -171,22 +171,24 @@ async function setCloseStatsForPreviousDay() {
 (async () => {
     console.log('init spot cron');
     const job1 = CronJob.from({
-        cronTime: '0 1 21,22 * * *', // every day at 5:01pm
+        cronTime: '0 0 17,18,19,20 * * *', // every day at 5:01pm
         // cronTime: '15,45 * * * * *',
 
         onTick: async () => {
             console.log('get close stats for the day')
             await setCloseStatsForToday();
         },
+        timeZone: 'America/Toronto',
         start: true
     });
 
     const job2 = CronJob.from({
-        cronTime: '0 1 4,5,6 * * *', // every day at 12:01am
+        cronTime: '0 1 0,1,2,3 * * *', // every day at 12:01am
         onTick: async () => {
             console.log('set previous close stats for today')
             await setCloseStatsForPreviousDay();
         },
+        timeZone: 'America/Toronto',
         start: true
     });
 })();
